@@ -1,31 +1,32 @@
 import { useState, useEffect } from "react";
 import css from "./App.module.css";
-import ImageGallery from "./components/ImageGallery/ImageGallery";
-import SearchBar from "./components/SearchBar/SearchBar";
-import { getImages } from "./components/api/api";
-import Loader from "./components/Loader/Loader";
-import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-import ImageModal from "./components/ImageModal/ImageModal";
+import ImageGallery from "../ImageGallery/ImageGallery";
+import SearchBar from "../SearchBar/SearchBar";
+import { getImages } from "../api/api";
+import Loader from "../Loader/Loader";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ImageModal from "../ImageModal/ImageModal";
+import { Image } from "../../types";
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [imagesList, setImagesList] = useState([]);
-  const [page, setPage] = useState(1);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalUrl, setModalUrl] = useState("");
-  const [modalAltText, setModalAltText] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [imagesList, setImagesList] = useState<Image[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [modalUrl, setModalUrl] = useState<string>("");
+  const [modalAltText, setModalAltText] = useState<string>("");
 
-  const handleSubmit = (query) => {
+  const handleSubmit = (query: string) => {
     setImagesList([]);
     setPage(1);
     setSearchQuery(query);
   };
 
-  const openModal = (url, alt) => {
+  const openModal = (url: string, alt: string) => {
     setIsOpen(true);
     setModalUrl(url);
     setModalAltText(alt);
@@ -71,11 +72,7 @@ function App() {
       ) : searchQuery && !imagesList.length && !isLoading ? (
         <div className={css.useraMessage}>Nothing found</div>
       ) : (
-        <ImageGallery
-          searchQuery={searchQuery}
-          images={imagesList}
-          openModal={openModal}
-        />
+        <ImageGallery images={imagesList} openModal={openModal} />
       )}
       {isVisible && <LoadMoreBtn setPage={setPage} />}
       <ImageModal
